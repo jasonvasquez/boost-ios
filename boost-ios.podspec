@@ -10,12 +10,13 @@ Pod::Spec.new do |s|
                        DESC
 
   s.homepage         = "http://www.boost.org"
-  s.license          = { :type => 'Boost' }
+  s.license          = { :type => 'Boost Software License', :file => "boost/LICENSE_1_0.txt" }
   s.author           = { "Jason Vasquez" => "jason@mugfu.com" }
   s.source           = { :git => "https://github.com/jasonvasquez/boost-ios.git" }
 
   s.platform         = :ios, '7.0'
   s.requires_arc     = false
+
 
   boost_archive_dir = "boost_#{s.version.to_s.gsub(".", "_")}"
   boost_archive_filename = "#{boost_archive_dir}.tar.bz2"
@@ -23,24 +24,26 @@ Pod::Spec.new do |s|
   boost_archive_url = "file:///tmp/#{boost_archive_filename}"
 
 
+
   s.prepare_command = <<-CMD
     echo "=== BEGIN PREPARE COMMAND" > /tmp/debug.txt
     echo "boost_archive_dir: #{boost_archive_dir}" >> /tmp/debug.txt
     env >> /tmp/debug.txt
-    if [ ! -d #{boost_archive_dir} ]; then
+    if [ ! -d boost ]; then
         curl -LO #{boost_archive_url}
         tar xjf #{boost_archive_filename}
+        mv #{boost_archive_dir} boost
     fi
 
     find .  >> /tmp/debug.txt
     echo "=== END PREPARE COMMAND" >> /tmp/debug.txt
   CMD
 
-  s.source_files = [
-    "#{boost_archive_dir}/boost/**/*.{hpp,ipp,h}"
-  ]
-  s.header_mappings_dir = boost_archive_dir + "/boost"
-  #s.header_dir = 'boost'
+  s.header_mappings_dir = "boost/boost"
+  s.preserve_paths = "boost/boost"
+  s.public_header_files = "boost/boost/**/*.{hpp,ipp,h}"
+  s.header_dir = "boost"
+
 
 end
 
