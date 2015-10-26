@@ -35,7 +35,8 @@ Pod::Spec.new do |s|
     echo "=== END PREPARE COMMAND" >> /tmp/debug.txt
   CMD
 
-  s.public_header_files = boost_archive_dir + "**/*.{h,hpp,ipp}"
+  s.source_files = "#{boost_archive_dir}/LICENSE_1_0.txt"
+  s.public_header_files = "#{boost_archive_dir}/**/*.{h,hpp,ipp}"
   s.header_mappings_dir = boost_archive_dir + "/boost"
   s.header_dir = 'boost'
 
