@@ -24,8 +24,9 @@ Pod::Spec.new do |s|
 
   s.prepare_command = <<-CMD
     echo "=== BEGIN PREPARE COMMAND" > /tmp/debug.txt
+    echo "boost_archive_dir: #{boost_archive_dir}"
     env >> /tmp/debug.txt
-    if [ ! -f #{boost_archive_filename} ]; then
+    if [ ! -d #{boost_archive_dir} ]; then
         curl -LO #{boost_archive_url}
         tar xjf #{boost_archive_filename}
     fi
